@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "ransomware"
+version = "0.1.0"
+description = "Simple ransomware in Python3"
+authors = ["Dylzz"]
+license = "GNU GENERAL PUBLIC LICENSE"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+cryptography = "^39.0.2"
+pycryptodome = "^3.17"
+
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
