@@ -3,13 +3,16 @@ from Crypto.Cipher import AES, PKCS1_OAEP
 
 AES_IV_SIZE = 16
 # Decrypt the session key with the private RSA key
+
+
 def decrypt_file():
     file_in = open("tests/encrypted_files/file.bin", "rb")
 
     private_key = RSA.import_key(open("key.pem").read())
 
     enc_session_key, iv, ciphertext = \
-        [file_in.read(x) for x in (private_key.size_in_bytes(), AES_IV_SIZE, -1)]
+        [file_in.read(x)
+         for x in (private_key.size_in_bytes(), AES_IV_SIZE, -1)]
     # enc_session_key = file_in.read(private_key.size_in_bytes())
     # iv = file_in.read(16)
     # ciphertext = file_in.read(-1)
