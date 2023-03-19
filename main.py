@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
+import os
 from src import encrypt
 from src import decrypt
 from src import logger
-import os
 
 
 def main(rootdir):
     rsa_aes = encrypt.RSAAESEncryption()
-    for subdir, dirs, files in os.walk(rootdir):
+    for subdir, _, files in os.walk(rootdir):
         for file in files:
             fpath = os.path.abspath(os.path.join(subdir, file))
             rsa_aes.encrypt(fpath)
