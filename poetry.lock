@@ -4,7 +4,7 @@
 name = "autopep8"
 version = "2.0.2"
 description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -19,7 +19,7 @@ pycodestyle = ">=2.10.0"
 name = "pycodestyle"
 version = "2.10.0"
 description = "Python style guide checker"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
@@ -73,4 +73,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "4a175ee9ad323fbf1dbaff24a0362ac85145b49024ed6f4ecb06c168fd9088fd"
+content-hash = "e5137cf33142047eb62e769b8cca7e6b0b23aab9e3cdd065e9b0764435582a03"

