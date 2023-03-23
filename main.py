@@ -5,6 +5,7 @@ import time
 from src import encrypt
 from src import decrypt
 from src import logger
+import sys
 
 
 def clean(rootdir):
@@ -28,4 +29,6 @@ def main(rootdir):
 
 
 if __name__ == '__main__':
-    main("tests/to_encrypt/")
+    if len(sys.argv) > 1:
+        # main("tests/to_encrypt/")
+        main(sys.argv[1])

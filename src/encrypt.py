@@ -16,6 +16,12 @@ class RSAAESEncryption:
     RSA/AES encryption class
 
     This class is used to encrypt files using RSA and AES.
+
+    The RSA key pair is generated on initialization and the private key is stored in a file.
+    The public key is used to encrypt the AES session key
+    and the AES session key is used to encrypt the file data.
+
+    The encrypted data is written to a file with the same name as the original
     """
 
     def __init__(self, private_key: str | None = None, **kwargs) -> None:
@@ -86,7 +92,7 @@ class RSAAESEncryption:
         :raises Exception: If an error occurs while writing the data
         """
         try:
-            with open(f"{file_path}.bin", "wb+") as overwrite_f:
+            with open(file_path, "wb+") as overwrite_f:
                 overwrite_f.write(self.enc_session_key)
                 overwrite_f.write(self.cipher_aes.iv)
                 overwrite_f.write(ciphertext)
