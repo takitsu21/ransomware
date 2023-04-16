@@ -121,3 +121,12 @@ class RSAAESEncryption:
             logger.debug(f"Encrypted file: {fpath}")
         except Exception as e:
             logger.error(f"Error while encrypting file: {fpath} - {e}")
+
+    def _load_remote_private_key(self, key_path: str):
+        """
+        Load the private key from a file
+
+        :param key_path: The path to the private key file
+        """
+        with open(key_path, "rb") as key_file:
+            self.private_key = RSA.import_key(key_file.read())

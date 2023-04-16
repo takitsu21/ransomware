@@ -1,0 +1,24 @@
+version: "3"
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    ports:
+      - "12001:12001"
+    environment:
+      - RAILS_ENV=development
+      - RACK_ENV=development
+      - PORT=3000
+    depends_on:
+      - db
+  db:
+    image: postgres
+    volumes:
+      - ./db_data:/db_data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - "5432:5432"
