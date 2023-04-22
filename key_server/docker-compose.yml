@@ -6,10 +6,6 @@ services:
       - .:/app
     ports:
       - "12001:12001"
-    environment:
-      - RAILS_ENV=development
-      - RACK_ENV=development
-      - PORT=3000
     depends_on:
       - db
   db:

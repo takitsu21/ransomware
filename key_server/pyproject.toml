@@ -10,6 +10,8 @@ packages = [{include = "key_server"}]
 python = "^3.11"
 fastapi = "^0.95.1"
 uvicorn = "^0.21.1"
+sqlalchemy = "^2.0.10"
+psycopg2-binary = "^2.9.6"
 
 
 [build-system]
