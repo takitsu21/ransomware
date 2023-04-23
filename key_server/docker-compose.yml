@@ -4,6 +4,8 @@ services:
     build: .
     volumes:
       - .:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db/postgres
     ports:
       - "12001:12001"
     depends_on:

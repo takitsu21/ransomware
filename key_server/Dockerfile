@@ -9,4 +9,4 @@ RUN apt update && apt upgrade -y \
 
 RUN poetry config virtualenvs.create false \
     && poetry install --no-root
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "12001"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "12001", "--reload"]
