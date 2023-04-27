@@ -16,16 +16,6 @@ app = FastAPI(debug=True)
 DB = Database(db_url=os.getenv("DATABASE_URL"))
 
 
-def get_id():
-    if sys.platform == 'win32':
-        out = subprocess.Popen('wmic csproduct get uuid', shell=True,
-                               stdout=subprocess.PIPE).stdout.read().decode().split('\n')[1].strip()
-    else:
-        out = subprocess.Popen('sudo cat /sys/class/dmi/id/product_uuid',
-                               shell=True, stdout=subprocess.PIPE).stdout.read().decode().strip()
-    return out
-
-
 @app.get("/keys/private_key/{uuid}/", dependencies=[Depends(api_key_auth)])
 async def get_private_key(uuid: str, db=Depends(DB)):
     key = db.get_key(uuid)
