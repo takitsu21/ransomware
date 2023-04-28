@@ -1,8 +1,8 @@
 from sqlalchemy.orm import sessionmaker
-from .models import PrivateKey, Base
+from .models import KeyPairModel, Base
 import sqlalchemy
 import logging
-from .schemas import PrivateKeyBase
+from .schemas import KeyPairBase
 import traceback
 logger = logging.getLogger("key_server")
 
@@ -11,7 +11,7 @@ class CustomSession:
     def __init__(self, session):
         self.session = session
 
-    def add_record(self, record: PrivateKey):
+    def add_record(self, record: KeyPairModel):
         try:
             self.session.add(record)
             self.session.commit()
@@ -32,8 +32,8 @@ class CustomSession:
     #     self._add_record(model)
 
     def get_key(self, uuid):
-        key = self.session.query(PrivateKey).filter(
-            PrivateKey.uuid == uuid).first()
+        key = self.session.query(KeyPairModel).filter(
+            KeyPairModel.uuid == uuid).first()
         return key
 
     def __enter__(self):

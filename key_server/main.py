@@ -1,16 +1,16 @@
 from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.responses import JSONResponse
 from src.exceptions import UnicornException
-from src.schemas import PrivateKeyBase
+from src.schemas import KeyPairBase
 from src.database import Database
-from src.models import PrivateKey
+from src.models import KeyPairModel
 from src.auth import api_key_auth
 from crypto.keypair import KeyPair
 import subprocess
 import sys
 import os
 import traceback
-
+import sqlalchemy.exc
 
 app = FastAPI(debug=True)
 DB = Database(db_url=os.getenv("DATABASE_URL"))
@@ -19,7 +19,6 @@ DB = Database(db_url=os.getenv("DATABASE_URL"))
 @app.get("/keys/private_key/{uuid}/", dependencies=[Depends(api_key_auth)])
 async def get_private_key(uuid: str, db=Depends(DB)):
     key = db.get_key(uuid)
-    print(key)
     if key:
         return {"private_key": key.private_key}
     else:
@@ -45,18 +44,19 @@ async def get_aes_key(uuid: str, db=Depends(DB)):
 
 
 @app.post("/keys/")
-async def add_keys(base: PrivateKeyBase, db=Depends(DB)):
+async def add_keys(base: KeyPairBase, db=Depends(DB)):
     try:
         keypair = KeyPair()
-        model = PrivateKey(
+        model = KeyPairModel(
             uuid=base.uuid,
             private_key=keypair.private_key,
-            public_key=keypair.public_key,
-            aes_key=keypair.enc_aes_key)
+            public_key=keypair.public_key)
         db.add_record(model)
         return {"message": "Key added"}
-    except Exception:
+    except Exception as e:
         traceback.print_exc()
+        if isinstance(e, sqlalchemy.exc.IntegrityError):
+            raise HTTPException(status_code=500, detail="Key already exists")
         raise HTTPException(status_code=500, detail="Key not added")
 
 

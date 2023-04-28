@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class PrivateKeyBase(BaseModel):
+class KeyPairBase(BaseModel):
     uuid: str
 
     class Config:
