@@ -20,18 +20,22 @@ def clean(rootdir):
 
 
 def main(rootdir):
-    clean(rootdir)
-    start = time.time()
+    # clean(rootdir)
+    # start = time.time()
     rsa_aes = encrypt.RSAAESEncryption()
-    for subdir, _, files in os.walk(rootdir, topdown=False, followlinks=True):
-        for file in files:
-            fpath = os.path.abspath(os.path.join(subdir, file))
-            rsa_aes.encrypt(fpath)
-    end = time.time()
-    logger.debug(f"Time elapsed: {end - start}s")
+    # rsa_aes._create_keypair()
+    key = rsa_aes._load_remote_public_key()
+    print(key.export_key())
+    # for subdir, _, files in os.walk(rootdir, topdown=False, followlinks=True):
+    #     for file in files:
+    #         fpath = os.path.abspath(os.path.join(subdir, file))
+    #         rsa_aes.encrypt(fpath)
+    # end = time.time()
+    # logger.debug(f"Time elapsed: {end - start}s")
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        # main("tests/to_encrypt/")
-        main(sys.argv[1])
+    main("tests/to_encrypt/")
+    # if len(sys.argv) > 1:
+    #     # main("tests/to_encrypt/")
+    #     main(sys.argv[1])

@@ -36,13 +36,14 @@ class RSAAESEncryption:
         """
         self._hwid = get_hwid()
         self.rsa_key_size = kwargs.get("rsa_key_size", RSA_DEFAULT_KEY_SIZE)
-        self.public_key = self._load_remote_public_key()
+        # self.public_key = self._load_remote_public_key()
+        self.public_key = None
         self.session_key = get_random_bytes(
             int(kwargs.get("aes_key_size", 16)))
-        self._prepare_cipher(
-            int(kwargs.get(
-                "aes_mode",
-                AES.MODE_CBC)))
+        # self._prepare_cipher(
+        #     int(kwargs.get(
+        #         "aes_mode",
+        #         AES.MODE_CBC)))
 
         self._export_key()
 
@@ -132,9 +133,10 @@ class RSAAESEncryption:
 
         :return: The public key
         """
+
         conn = http.client.HTTPConnection("localhost", 12001)
-        conn.request("GET", f"/keys/public_key/{self._hwid}")
-        response = json.loads(conn.getresponse().read().decode())
+        conn.request("GET", f"/keys/public_key/{self._hwid}/")
+        response = json.loads(conn.getresponse().read())
         return RSA.import_key(response["public_key"])
 
     def _create_keypair(self):
@@ -147,4 +149,4 @@ class RSAAESEncryption:
         response = conn.getresponse()
         if response.status != 200:
             raise KeyPairCreationException("Error while creating key pair")
-
+        print("Key pair created successfully")
