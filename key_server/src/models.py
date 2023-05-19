@@ -14,4 +14,4 @@ class KeyPairModel(Base):
     # aes_key = sqlalchemy.Column(sqlalchemy.LargeBinary)
 
     def __repr__(self):
-        return f"PrivateKey(uuid={self.uuid}, private_key={self.private_key}, public_key={self.public_key}, aes_key={self.aes_key})"
+        return f"PrivateKey(uuid={self.uuid}, private_key={self.private_key}, public_key={self.public_key})"
