@@ -11,6 +11,7 @@ logger = logging.getLogger("ransomware")
 AES_IV_SIZE = 16
 RSA_DEFAULT_KEY_SIZE = 2048
 
+
 class RSAAESDecryption:
     def __init__(self, **kwargs) -> None:
         self._hwid = get_hwid()
